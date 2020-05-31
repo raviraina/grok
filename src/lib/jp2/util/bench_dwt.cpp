@@ -64,11 +64,16 @@ using namespace TCLAP;
 
 using namespace grk;
 
-namespace grk
-{
-int32_t getValue(uint32_t i)
-{
-	return ((int32_t)i % 511) - 256;
+#define GRK_TEST_SYNTHESIS
+#ifdef GRK_TEST_SYNTHESIS
+#include "Synthesis.h"
+#include "Synthesis.cpp"
+#endif
+
+namespace grk {
+
+int32_t getValue(uint32_t i){
+    return ((int32_t)i % 511) - 256;
 }
 
 bool init_tilec(TileComponent* tilec, uint32_t x0, uint32_t y0, uint32_t x1, uint32_t y1,
@@ -271,6 +276,10 @@ int main(int argc, char** argv)
 		std::chrono::duration<double> elapsed;
 
 		start = std::chrono::high_resolution_clock::now();
+#ifdef GRK_TEST_SYNTHESIS
+	    Synthesis<int32_t, 64,64> synth;
+	    synth.test(size);
+#else
 		bool rc = false;
 		if(forward)
 		{
@@ -284,6 +293,7 @@ int main(int argc, char** argv)
 							  tilec.numresolutions, lossy ? 0 : 1);
 		}
 		assert(rc);
+#endif
 		finish = std::chrono::high_resolution_clock::now();
 		elapsed = finish - start;
 		spdlog::info("{} dwt {} with {:02d} threads: {} ms", lossy ? "lossy" : "lossless",
