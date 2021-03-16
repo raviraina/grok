@@ -19,8 +19,8 @@
  *
  */
 
-#include "CPUArch.h"
 #include "grk_includes.h"
+#include "CPUArch.h"
 
 namespace grk {
 

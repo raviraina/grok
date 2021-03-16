@@ -23,6 +23,12 @@
 
 #include <stddef.h>
 
+#ifdef WIN32
+	#include <intrin.h>
+#elif defined(__x86_64__) || defined(__i386__)
+	#include <x86intrin.h>
+#endif
+
 namespace grk {
 
 const size_t default_align = 64;
