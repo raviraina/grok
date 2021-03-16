@@ -1,3 +1,9 @@
+libgrokj2k (7.6.6-3) unstable; urgency=high
+
+    * Fix GCC poison error by removing one poison directive (Closes: #985116)
+
+ -- Aaron Boxer <boxerab@gmail.com>  Tue, 16 Mar 2021 11:10:00 +0200
+
 libgrokj2k (7.6.6-2) unstable; urgency=high
 
     * Add -latomic to fix FTBFS on armel/mipsel (Closes: #983773)
