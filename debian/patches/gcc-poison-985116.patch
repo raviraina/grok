@@ -1,0 +1,64 @@
+Description: Remove second GCC poison directive 
+ This patch removes an unnecessary second GCC poison directive, which
+ causes a build failure on i386. 
+ Author: Aaron Boxer <boxerab@gmail.com>
+
+---
+
+Origin: upstream, https://github.com/GrokImageCompression/grok/releases/tag/v7.6.6-3
+Bug-Debian: https://bugs.debian.org/985116
+Forwarded: no
+Reviewed-By: Aaron Boxer <boxerab@gmail.com>
+Last-Update: 2021-03-18
+
+--- libgrokj2k-7.6.6.orig/src/lib/jp2/point_transform/mct.cpp
++++ libgrokj2k-7.6.6/src/lib/jp2/point_transform/mct.cpp
+@@ -19,8 +19,8 @@
+  *
+  */
+ 
+-#include "CPUArch.h"
+ #include "grk_includes.h"
++#include "CPUArch.h"
+ 
+ namespace grk {
+ 
+--- libgrokj2k-7.6.6.orig/src/lib/jp2/util/CPUArch.h
++++ libgrokj2k-7.6.6/src/lib/jp2/util/CPUArch.h
+@@ -16,21 +16,8 @@
+ 
+ #pragma once
+ 
+-#define GROK_SKIP_POISON
+-
+ #include "grk_includes.h"
+ 
+-#ifdef WIN32
+-	#include <intrin.h>
+-#elif defined(__x86_64__) || defined(__i386__)
+-	#include <x86intrin.h>
+-#endif
+-
+-
+-#if defined(__GNUC__)
+-#pragma GCC poison malloc calloc realloc free
+-#endif
+-
+ namespace grk {
+ 
+ class CPUArch {
+--- libgrokj2k-7.6.6.orig/src/lib/jp2/util/MemManager.h
++++ libgrokj2k-7.6.6/src/lib/jp2/util/MemManager.h
+@@ -23,6 +23,12 @@
+ 
+ #include <stddef.h>
+ 
++#ifdef WIN32
++	#include <intrin.h>
++#elif defined(__x86_64__) || defined(__i386__)
++	#include <x86intrin.h>
++#endif
++
+ namespace grk {
+ 
+ const size_t default_align = 64;
